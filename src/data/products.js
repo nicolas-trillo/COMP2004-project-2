@@ -19,7 +19,7 @@ const products = [
   },
   {
     id: "3033490004521",
-    productName: "Yougurt",
+    productName: "Yogurt",
     brand: "Danone",
     quantity: "500 g",
     image:
@@ -38,7 +38,7 @@ const products = [
   {
     id: "3045140105502",
     productName: "Chocolate",
-    brand: "Milka,Mondelez",
+    brand: "Milka, Mondelez",
     quantity: "100 g",
     image:
       "https://images.openfoodfacts.org/images/products/304/514/010/5502/front_en.162.400.jpg",
