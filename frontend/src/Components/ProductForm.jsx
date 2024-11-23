@@ -1,93 +1,95 @@
 // simplifies UI for CRUD components
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+// by using a pop-up interface
+import Popup from "reactjs-popup";
+// CSS provided by library
+import "reactjs-popup/dist/index.css";
 import { accounting } from "accounting";
 
 export default function ProductForm({
-    isEditing,
     formData,
     handleOnChange,
     handleOnSubmit,
-    register,
+    isEditing,
+    isPopupOpen,
+    setIsPopupOpen,
     handleSubmit,
-    errors,
 }) {
     return (
-        <Popup trigger={<button>{isEditing? "Edit" : "Add product"}</button>} modal nested>
-        {close => (
-            <div className='modal vstack'>
-                <div className='content'>
-                    <form className="vstack" onSubmit={handleSubmit(handleOnSubmit)}>
-                        <label htmlFor="productName">Product Name: <br/>
-                            <input 
+        // "open" controls state of pop-up,
+        // and onClose executes a lambda
+        // when pop-up is closed.
+        <Popup
+            open={isPopupOpen}
+            onClose={() => setIsPopupOpen(false)}
+            modal
+            nested
+        >
+            <div className="modal vstack">
+                <div className="content">
+                    <form
+                        className="vstack"
+                        onSubmit={handleSubmit(handleOnSubmit)}
+                    >
+                        <label htmlFor="productName">
+                            Product Name: <br />
+                            <input
                                 type="text"
                                 name="productName"
-                                {
-                                ...(isEditing? {} : register("productName", {
-                                    required: "Product name is required",
-                                }))}
-                                value={formData.productName}
+                                value={formData.productName || ""}
                                 onChange={handleOnChange}
                                 id="productName"
+                                required
                             />
                         </label>
-                        {errors.productName && (<span style={{ color: "red" }}>{errors.productName.message}</span>)}
-                        <label htmlFor="brand">Product Brand: <br/>
-                            <input type="text" 
+                        <label htmlFor="brand">
+                            Product Brand: <br />
+                            <input
+                                type="text"
                                 name="brand"
-                                {
-                                ...(isEditing? {} : register("brand", {
-                                    required: "Brand is required",
-                                }))}
-                                value={formData.brand}
+                                value={formData.brand || ""}
                                 onChange={handleOnChange}
                                 id="brand"
+                                required
                             />
                         </label>
-                        {errors.brand && (<span style={{ color: "red" }}>{errors.brand.message}</span>)}
-                        <label htmlFor="image">Image URL: <br/>
-                            <input 
-                                type="text" 
-                                name="image" 
-                                {...(isEditing ? {} : register("image", {
-                                        required: "Image URL is required",
-                                        pattern: {
-                                            value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
-                                            message: "Invalid URL",
-                                },}))}
-                                value={formData.image}
+                        <label htmlFor="image">
+                            Image URL: <br />
+                            <input
+                                type="text"
+                                name="image"
+                                value={formData.image || ""}
                                 onChange={handleOnChange}
-                                id="image" 
+                                id="image"
+                                required
                             />
                         </label>
-                        {errors.image && (<span style={{ color: "red" }}>{errors.image.message}</span>)}
-                        <label htmlFor="price">Price: $
-                            <input 
-                                type="number" 
+                        <label htmlFor="price">
+                            Price: $
+                            <input
+                                type="number"
                                 name="price"
-                                {...(isEditing ? {} : register("price", {
-                                    required: "Price is required",
-                                    pattern: {
-                                        value: /^\d*\.?\d{0,2}$/,
-                                        message: "Invalid price",
-                                },}))}
-                                value={accounting.unformat(formData.price) || ""}
+                                value={accounting.unformat(
+                                    formData.price || "",
+                                )}
                                 onChange={handleOnChange}
-                                id="price" 
+                                id="price"
+                                required
                             />
                         </label>
-                        {errors.price && (<span style={{ color: "red" }}>{errors.price.message}</span>)}
-                        <button type="submit" onClick={(errors) => !errors? close() : {}}>{isEditing? "Save" : "Add"}</button>
+                        <button type="submit">
+                            {isEditing ? "Save" : "Add"}
+                        </button>
                     </form>
                 </div>
                 <div>
-                    <button className="bad-btn" onClick=
-                        {() => close()}>
-                            Cancel
+                    <button
+                        className="bad-btn"
+                        onClick={() => setIsPopupOpen(false)}
+                    >
+                        Cancel
                     </button>
                 </div>
             </div>
-        )}
         </Popup>
     );
 }

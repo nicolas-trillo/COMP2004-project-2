@@ -27,6 +27,7 @@ server.get("/", (request, response) => {
     response.send("<pre>WILKOMMEN!!</pre>");
 });
 
+// returns products list as JSON
 server.get("/products", async (request, response) => {
     try {
         await Product.find().then((result) => 
@@ -39,6 +40,7 @@ server.get("/products", async (request, response) => {
 }
 });
 
+// add product post path
 server.post("/add-product", async (request, response) => {
     const { productName, brand, image, price, id } = request.body;
     const newProduct = new Product({
@@ -56,6 +58,7 @@ server.post("/add-product", async (request, response) => {
     }
 });
 
+// delete product path
 server.delete("/products/:id", async (request, response) => {
     const {id} = request.params;
     const objId = new mongoose.Types.ObjectId(id);
@@ -63,11 +66,11 @@ server.delete("/products/:id", async (request, response) => {
         await Product.findByIdAndDelete(objId);
         response.status(200).json({message: "Product deleted successfully."});
     } catch (error) {
-        console.log("f");
         response.status(404).json({message: error.message});
     }
 });
 
+// edit path
 server.patch("/products/:pid", async (request, response) => {
     const { pid } = request.params;
     const { productName, brand, image, price, id } = request.body;
