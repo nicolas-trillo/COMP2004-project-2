@@ -140,3 +140,9 @@ button:hover {
 .item-total * {
   width: 100%;
 }
+input {
+  width: 100%;
+  padding: 5px;
+  border: 2px solid rgb(174, 174, 178);
+  border-radius: 5px; 
+}
